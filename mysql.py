@@ -109,8 +109,7 @@ def insertFriend(usrId,friendId):
                          password="ws030114",
                          database="harmonychat" )
     cursor = db.cursor()
-    sql="INSERT INTO  VALUES('"+str(toUsr)+"','"+str(fromUsr)+"','"+msg+"','"+time+"');"
-
+    sql="INSERT INTO friend(usrid,friendid) VALUES("+str(usrId)+","+str(friendId)+");"
     cursor.execute(sql) 
     db.commit() # 切记，还需要commit到数据库执行
     db.close()
@@ -135,5 +134,6 @@ if __name__ == "__main__":
 #     # json.dump(list)
 #     print(list)
     # insertMsg(100002,100004,"你好","2023-11-20 13:20:20")
-    res = queryFriends(100001)
-    print(res)
+    # res = queryFriends(100001)
+    # print(res)
+    insertFriend(100004,100005)

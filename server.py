@@ -123,10 +123,13 @@ def addFriend():
     id=data['id']
     token=data['token']
     friendId=data['friend_id']
-    ok=pyRedis(id,token)
+    ok=pyRedis.isTokenEqual(id,token)
     if ok:
+        mysql.insertFriend(id,friendId)
+        mysql.insertFriend(friendId,id)
         return{
-            
+            "status_code":1,
+            "msg":"add success"
         }
     else:
         return {

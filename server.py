@@ -79,5 +79,57 @@ def getmsg():
 # 发送消息  
 @app.route("/sendmsg",methods=['POST'])
 def sendMsg():
+    data=request.get_json()
+    usrId=data["from_id"]
+    toUsrId=data["to_id"]
+    msg=data['msg']
+    token=data["token"]
+    time=data['time']
+    ok=pyRedis.isTokenEqual(usrId,token)
+    if ok:
+        mysql.insertMsg(usrId,toUsrId,msg,time)
+        return{
+            "status_code":1,
+            "msg":"insert success"
+        }
+    else:
+        return {
+            "status_code":0,
+            "msg":"token error"
+        }
+
+@app.route("/friends",methods=['GET'])
+def friendList():
+    data=request.get_json()
+    id=data['id']
+    token=data['token']
+    ok=pyRedis.isTokenEqual(id,token)
+    if ok:
+        friends=mysql.queryFriends(id)
+        res={}
+        res['status_code']=1
+        res['msg']="query success"
+        res['res']=friends
+        return jsonify(res)
+    else:
+        return{
+            "status_code":0,
+            "msg":"token error"
+        }
     
-    return 
+@app.route("/addfriend",methods=['POST'])
+def addFriend():
+    data=request.get_json()
+    id=data['id']
+    token=data['token']
+    friendId=data['friend_id']
+    ok=pyRedis(id,token)
+    if ok:
+        return{
+            
+        }
+    else:
+        return {
+            "status_code":0,
+            "msg":"token error"
+        }

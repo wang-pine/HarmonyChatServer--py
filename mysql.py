@@ -57,7 +57,7 @@ def queryMsg(usrId,toUsrId):
     db.close()
     return allmsg
 
-
+# 全部信息转json能解析的格式
 def msgToJson(msg):
     list=[]
     for element in msg:
@@ -69,25 +69,71 @@ def msgToJson(msg):
         temp['date']=str(element.date)
         list.append(temp)
     return list
+
 # 注册新用户
 def register(name,head):
     return id
+
+# 添加新的信息
+def insertMsg(fromUsr,toUsr,msg,time):
+    db = pymysql.connect(host="localhost",
+                         user="root",
+                         password="ws030114",
+                         database="harmonychat" )
+    cursor = db.cursor()
+    sql="INSERT INTO msg(tousr,fromusr,msg,time) VALUES('"+str(toUsr)+"','"+str(fromUsr)+"','"+msg+"','"+time+"');"
+
+    cursor.execute(sql) 
+    db.commit() # 切记，还需要commit到数据库执行
+    db.close()
+    # return cursor.lastrowid()
+
+# 查询所有的好友id
+def queryFriends(id):
+    db = pymysql.connect(host="localhost",
+                         user="root",
+                         password="ws030114",
+                         database="harmonychat" )
+    cursor = db.cursor()
+    sql="SELECT friendid FROM friend WHERE usrid="+str(id)+";"
+    cursor.execute(sql)
+    results=cursor.fetchall()
+    list = []
+    for row in results:
+        list.append(row[0])
+    return list
+
+def insertFriend(usrId,friendId):
+    db = pymysql.connect(host="localhost",
+                         user="root",
+                         password="ws030114",
+                         database="harmonychat" )
+    cursor = db.cursor()
+    sql="INSERT INTO  VALUES('"+str(toUsr)+"','"+str(fromUsr)+"','"+msg+"','"+time+"');"
+
+    cursor.execute(sql) 
+    db.commit() # 切记，还需要commit到数据库执行
+    db.close()
+
 if __name__ == "__main__":
    #queryPasswd("100001")
    # queryHead("100002")
 # test get msg
-    allmsg=queryMsg(100001,100002)
-#    print("all msg is")
-#    for element in allmsg:
-#        print('%s %s %s %s %s' %(element.msgId,element.fromUsr,element.toUsr,element.msg,element.date))
-    list=[]
-    for element in allmsg:
-        temp={}
-        temp['id']=element.msgId
-        temp['to_usr']=element.toUsr
-        temp['from_usr']=element.fromUsr
-        temp['msg']=element.msg
-        temp['date']=str(element.date)
-        list.append(temp)
-    # json.dump(list)
-    print(list)
+#     allmsg=queryMsg(100001,100002)
+# #    print("all msg is")
+# #    for element in allmsg:
+# #        print('%s %s %s %s %s' %(element.msgId,element.fromUsr,element.toUsr,element.msg,element.date))
+#     list=[]
+#     for element in allmsg:
+#         temp={}
+#         temp['id']=element.msgId
+#         temp['to_usr']=element.toUsr
+#         temp['from_usr']=element.fromUsr
+#         temp['msg']=element.msg
+#         temp['date']=str(element.date)
+#         list.append(temp)
+#     # json.dump(list)
+#     print(list)
+    # insertMsg(100002,100004,"你好","2023-11-20 13:20:20")
+    res = queryFriends(100001)
+    print(res)

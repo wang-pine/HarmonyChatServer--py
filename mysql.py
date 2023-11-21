@@ -40,13 +40,14 @@ class msg:
         self.fromUsr=fromUsr
         self.msg=msg
         self.date=date
-def queryMsg(usrId,toUsrId):
+def queryMsg(usrId,toUsrId,date):
     db = pymysql.connect(host="localhost",
                          user="root",
                          password="ws030114",
                          database="harmonychat" )
     cursor = db.cursor()
-    sql="SELECT * FROM msg WHERE fromusr="+str(usrId)+" AND tousr="+str(toUsrId)+";"
+    strDate='"'+date+'"'
+    sql='SELECT * FROM msg WHERE fromusr='+str(usrId)+' AND tousr='+str(toUsrId)+' WHERE time >='+strDate+';'
     cursor.execute(sql)
     results=cursor.fetchall()
     allmsg=[]
@@ -161,5 +162,8 @@ if __name__ == "__main__":
     # res = queryFriends(100001)
     # print(res)
     # insertFriend(100004,100005)
-    res = getUsrInfo(100001)
-    print(res)
+    # res = getUsrInfo(100001)
+    # print(res)
+    allmag=queryMsg(100001,100003,'2023-11-20 20:47:20')
+    jsonmsg=msgToJson(allmag)
+    print(jsonmsg)

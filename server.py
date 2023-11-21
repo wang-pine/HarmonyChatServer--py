@@ -64,7 +64,7 @@ def getmsg():
     lastTime=data["last_time"]
     ok=pyRedis.isTokenEqual(usrId,token)
     if ok:
-        allMsg=mysql.queryMsg(usrId,toUsrId)
+        allMsg=mysql.queryMsg(usrId,toUsrId,lastTime)
         res={}
         res['status_code']=1
         res['msg']="query success"

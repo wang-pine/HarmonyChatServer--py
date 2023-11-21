@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, session
 import json
 import mysql
 import pyRedis
-app = Flask(__name__)
+app = Flask(__name__,static_folder="./static")
 
 @app.route("/")
 def pong():
@@ -30,7 +30,7 @@ def login():
             "msg":"error"
         }
 
-# 注册
+# 注册，注册成功之后系统自动分配头像
 @app.route("/register",methods=['post'])
 def register():
 

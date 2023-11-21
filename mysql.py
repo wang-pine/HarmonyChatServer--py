@@ -23,7 +23,7 @@ def queryHead(id):
                          password="ws030114",
                          database="harmonychat" )
     cursor = db.cursor()
-    sql="SELECT head FROM usr WHERE id="+id+";"
+    sql="SELECT head FROM usr WHERE id="+str(id)+";"
     cursor.execute(sql)
     results=cursor.fetchall()
     for row in results:
@@ -116,6 +116,28 @@ def insertFriend(usrId,friendId):
     db.commit() # 切记，还需要commit到数据库执行
     db.close()
 
+# 获取个人信息
+def getUsrInfo(usrId):
+    res={}
+    db = pymysql.connect(host="localhost",
+                         user="root",
+                         password="ws030114",
+                         database="harmonychat" )
+    cursor = db.cursor()
+    sql="SELECT * FROM usr WHERE id="+str(usrId)+";"
+    cursor.execute(sql)
+    results=cursor.fetchall()
+    for row in results:
+        id=row[0]
+        name=row[1]
+        head=row[2]
+        res['id']=id
+        res['name']=name
+        res['head']=head
+        print("id=%s,name=%s,head=%s" %(id,name,head))
+    db.close()
+    return res
+
 if __name__ == "__main__":
    #queryPasswd("100001")
    # queryHead("100002")
@@ -138,4 +160,6 @@ if __name__ == "__main__":
     # insertMsg(100002,100004,"你好","2023-11-20 13:20:20")
     # res = queryFriends(100001)
     # print(res)
-    insertFriend(100004,100005)
+    # insertFriend(100004,100005)
+    res = getUsrInfo(100001)
+    print(res)

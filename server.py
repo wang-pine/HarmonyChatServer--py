@@ -143,7 +143,37 @@ def addFriend():
 # 获取用户头像
 @app.route("/head",methods=['GET'])
 def getHead():
+    data=request.get_json()
+    id=data['id']
+    head=mysql.queryHead(id)
+    if head!="":
+        res={}
+        res['status_code']=1
+        res['msg']="query success"
+        res['head']=head
+        return jsonify(res)
+    else:
+        return{
+            "status_code":0,
+            "msg":"head is empty"
+        }
 
-    return
-
-# 
+# 回传个人信息
+@app.route("/info",methods=['GET'])
+def getInfo():
+    data=request.get_json()
+    id=data['id']
+    token=data['token']
+    ok=pyRedis.isTokenEqual(id,token)
+    if ok:
+        info=mysql.getUsrInfo(id)
+        res={}
+        res["status_code"]=1
+        res["msg"]="get success"
+        res['res']=info
+        return jsonify(res)
+    else:
+        return{
+            "status_code":0,
+            "msg":"get failed"
+        }

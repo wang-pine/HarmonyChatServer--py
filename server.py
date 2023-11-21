@@ -7,6 +7,7 @@ app = Flask(__name__,static_folder="./static")
 @app.route("/")
 def pong():
     return "扫我端口，死你的母亲"
+
 # 登录
 @app.route("/login",methods=['POST'])
 def login():
@@ -98,6 +99,7 @@ def sendMsg():
             "msg":"token error"
         }
 
+# 获取好友列表
 @app.route("/friends",methods=['GET'])
 def friendList():
     data=request.get_json()
@@ -117,6 +119,7 @@ def friendList():
             "msg":"token error"
         }
     
+# 添加好友
 @app.route("/addfriend",methods=['POST'])
 def addFriend():
     data=request.get_json()
@@ -136,3 +139,11 @@ def addFriend():
             "status_code":0,
             "msg":"token error"
         }
+    
+# 获取用户头像
+@app.route("/head",methods=['GET'])
+def getHead():
+
+    return
+
+# 

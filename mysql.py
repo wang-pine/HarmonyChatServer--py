@@ -72,6 +72,7 @@ def msgToJson(msg):
 
 # 注册新用户
 def register(name,head):
+
     return id
 
 # 添加新的信息
@@ -103,6 +104,7 @@ def queryFriends(id):
         list.append(row[0])
     return list
 
+# 插入好友信息
 def insertFriend(usrId,friendId):
     db = pymysql.connect(host="localhost",
                          user="root",

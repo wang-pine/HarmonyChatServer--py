@@ -47,7 +47,8 @@ def queryMsg(usrId,toUsrId,date):
                          database="harmonychat" )
     cursor = db.cursor()
     strDate='"'+date+'"'
-    sql='SELECT * FROM msg WHERE fromusr='+str(usrId)+' AND tousr='+str(toUsrId)+' WHERE time >='+strDate+';'
+    # sql='SELECT * FROM msg WHERE fromusr='+str(usrId)+' AND tousr='+str(toUsrId)+' WHERE time >='+strDate+';'
+    sql = "SELECT *FROM msg WHERE fromusr= %s AND tousr= %s AND time >= '%s' " %(usrId,toUsrId,date)
     cursor.execute(sql)
     results=cursor.fetchall()
     allmsg=[]
@@ -72,8 +73,14 @@ def msgToJson(msg):
     return list
 
 # 注册新用户
-def register(name,head):
-
+def register(name,head,passwd):
+    db = pymysql.connect(host="localhost",user="root",password="ws030114",database="harmonychat")
+    cursor = db.cursor()
+    sql=("INSERT INTO usr(name,head,passwd) VALUES('%s','%s','%s')" %(name,head,passwd))
+    cursor.execute(sql)
+    id=cursor.lastrowid
+    db.commit()
+    db.close()
     return id
 
 # 添加新的信息
@@ -83,7 +90,7 @@ def insertMsg(fromUsr,toUsr,msg,time):
                          password="ws030114",
                          database="harmonychat" )
     cursor = db.cursor()
-    sql="INSERT INTO msg(tousr,fromusr,msg,time) VALUES('"+str(toUsr)+"','"+str(fromUsr)+"','"+msg+"','"+time+"');"
+    sql=("INSERT INTO msg(tousr,fromusr,msg,time) VALUES(%s,%s,'%s','%s')" %(toUsr,fromUsr,msg,time))
 
     cursor.execute(sql) 
     db.commit() # 切记，还需要commit到数据库执行
@@ -143,11 +150,11 @@ if __name__ == "__main__":
    #queryPasswd("100001")
    # queryHead("100002")
 # test get msg
-#     allmsg=queryMsg(100001,100002)
-# #    print("all msg is")
-# #    for element in allmsg:
-# #        print('%s %s %s %s %s' %(element.msgId,element.fromUsr,element.toUsr,element.msg,element.date))
-#     list=[]
+     allmsg=queryMsg(100001,100002,'2023-11-12 23:00:00')
+     print("all msg is")
+     for element in allmsg:
+        print('%s %s %s %s %s' %(element.msgId,element.fromUsr,element.toUsr,element.msg,element.date))
+    # list=[]
 #     for element in allmsg:
 #         temp={}
 #         temp['id']=element.msgId
@@ -158,12 +165,14 @@ if __name__ == "__main__":
 #         list.append(temp)
 #     # json.dump(list)
 #     print(list)
-    # insertMsg(100002,100004,"你好","2023-11-20 13:20:20")
+    # insertMsg(100003,100005,"你好","2023-11-20 13:20:20")
     # res = queryFriends(100001)
     # print(res)
     # insertFriend(100004,100005)
     # res = getUsrInfo(100001)
     # print(res)
-    allmag=queryMsg(100001,100003,'2023-11-20 20:47:20')
-    jsonmsg=msgToJson(allmag)
-    print(jsonmsg)
+    # allmag=queryMsg(100001,100003,'2023-11-20 20:47:20')
+    # jsonmsg=msgToJson(allmag)
+    # print(jsonmsg)
+    # id=register("wang-ss","nulll","dddiwndiwdnwd")
+    # print("id=%s" %(id))

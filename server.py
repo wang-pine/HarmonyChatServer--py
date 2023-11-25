@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, session
 import json
 import mysql
 import pyRedis
+import random
 app = Flask(__name__,static_folder="./static")
 
 @app.route("/")
@@ -34,8 +35,27 @@ def login():
 # 注册，注册成功之后系统自动分配头像
 @app.route("/register",methods=['post'])
 def register():
+    data =request.get_json()
+    name=data['name']
+    passwd=data['passwd']
+    head="http://47.123.7.97:8080/static/head-%s.jpg"%(str(random.randint(1,3)))
+    id=mysql.register(name,head,passwd)
+    # return"你的id是%s"%(id)
+    if id != 0:
+        return {
+        "status_code":1,
+        "msg":"注册成功",
+        "id":str(id),
+        "head":str(head)
+        }
+    else:
+        return{
+            "status_code":0,
+            "msg":"注册失败"
+        }
 
-    return
+
+
 
 # token使用测试
 @app.route("/token",methods=['POST'])

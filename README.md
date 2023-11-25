@@ -3,7 +3,7 @@
 this proj is for njupt's HarmongOS debelop Course Design
 
 > 本项目是用flask框架搭建的聊天软件服务端框架
-时间仓促没有使用websocket而是使用了简单的htt通信
+时间仓促没有使用websocket而是使用了简单的http通信
 项目的大部分内容已使用golang重写
 这个仅仅作为思路和基本框架使用
 可能会有bug

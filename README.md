@@ -1,6 +1,6 @@
 # 注意
 
-this proj is for njupt's HarmongOS debelop Course Design
+this proj is for njupt's HarmongOS develop Course Design
 
 > 本项目是用flask框架搭建的聊天软件服务端框架
 时间仓促没有使用websocket而是使用了简单的http通信
